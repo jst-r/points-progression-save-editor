@@ -25,25 +25,48 @@ function App() {
     );
   };
 
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(encodedSave);
+  };
+
   return (
-    <>
-      <div className="text-white flex gap-4">
-        <span>Enter a save here:</span>
-        <input
-          className="border"
-          type="text"
-          value={encodedSave}
-          onChange={(e) => setEncodedSave(e.target.value)}
-        />
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-2">
+        <label className="text-sm text-gray-400">Save Data</label>
+        <div className="flex gap-2">
+          <input
+            className="flex-1 border border-gray-600 rounded px-3 py-2 bg-gray-800 text-white focus:outline-none focus:border-blue-500"
+            type="text"
+            placeholder="Paste your save here..."
+            value={encodedSave}
+            onChange={(e) => setEncodedSave(e.target.value)}
+          />
+          <button onClick={copyToClipboard}>Copy</button>
+        </div>
       </div>
-      <div className="flex gap-4 items-center">
-        <span>Add offline time:</span>
-        <button onClick={() => addOfflineTime(MS_IN_HOUR)}>+1h</button>
-        <button onClick={() => addOfflineTime(8 * MS_IN_HOUR)}>+8h</button>
-        <button onClick={() => addOfflineTime(24 * MS_IN_HOUR)}>+1d</button>
+
+      <div className="flex flex-col gap-2">
+        <label className="text-sm text-gray-400">Add Offline Time</label>
+        <div className="flex gap-2">
+          <button onClick={() => addOfflineTime(MS_IN_HOUR)}>+1 hour</button>
+          <button onClick={() => addOfflineTime(8 * MS_IN_HOUR)}>
+            +8 hours
+          </button>
+          <button onClick={() => addOfflineTime(24 * MS_IN_HOUR)}>
+            +1 day
+          </button>
+        </div>
       </div>
-      <div>{JSON.stringify(arraySave)}</div>
-    </>
+
+      {arraySave && (
+        <div className="flex flex-col gap-2">
+          <label className="text-sm text-gray-400">Decoded Save</label>
+          <pre className="text-left bg-gray-800 border border-gray-700 rounded px-3 py-2 text-xs text-gray-300 overflow-auto max-h-64">
+            {JSON.stringify(arraySave, null, 2)}
+          </pre>
+        </div>
+      )}
+    </div>
   );
 }
 
